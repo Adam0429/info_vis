@@ -1,0 +1,38 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {
+      "url": "https://raw.githubusercontent.com/jldbc/coffee-quality-database/master/data/arabica_data_cleaned.csv",
+      "format": {"type": "csv"}
+  },
+  "transform": [
+  ],
+  "repeat": {"column": ["Aroma", "Flavor", "Aftertaste","Acidity","Body"]},
+  "spec": {
+    "mark": "bar",
+    "encoding": {
+      "y": {
+        "field": "Country\\.of\\.Origin",
+        "type": "nominal",
+        "axis": {"title": null},
+        "sort": {
+          "op": "mean",
+          "field": {"repeat": "column"},
+          "order": "descending"
+        }
+      },
+      "x": {
+        "field": {"repeat": "column"},
+        "type": "quantitative",
+        "aggregate": "mean"
+      },
+      "color": {
+        "condition": {
+          "test": "datum['Country.of.Origin']== 'China'",
+          "value": "#636363"
+        },
+        "value": "#bdbdbd"
+      }
+      
+    }
+  }
+}
