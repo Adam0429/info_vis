@@ -1,0 +1,108 @@
+<html>
+   <head>
+      <title> Feihong Wang - Assignment</title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.9.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@4.0.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.2.1"></script>
+      <style>
+         body {
+         font-family: sans-serif;
+         }
+      </style>
+   </head>
+   <body>
+      <table style="width: 850px;" cellspacing="5" cellpadding="5">
+         <tbody>
+            <tr>
+               <td style="width: 200px; vertical-align: top;"><strong>Name:&nbsp;</strong></td>
+               <td style="vertical-align: top;">Feihong Wang</td>
+            </tr>
+            <tr>
+               <td style="vertical-align: top;"><strong>Student Number:</strong></td>
+               <td style="vertical-align: top;">15205902</td>
+            </tr>
+            <tr>
+               <td style="vertical-align: top;"><strong>Dataset description:</strong></td>
+               <td style="vertical-align: top;"> 
+			    <p><a href="https://github.com/jldbc/coffee-quality-database/tree/master/data" target="_blank" rel="noopener">Coffee Quality Dataset</a>.</p>
+			    <p>These data contain reviews of 1312 arabica coffee beans from the Coffee Quality Institute's trained reviewers. The features include:<br>
+			    Quality Measures(Aroma, Flavor, Aftertaste, Acidity, Body, Balance, Uniformity, Cup Cleanliness, Sweetness, Moisture, Defects)<br>
+				Bean Metadata(Processing Method, Color, Species)<br>
+				Farm Metadata(Owner, Country of Origin, Farm Name, Lot Number, Mill, Company, Altitude, Region)</p>
+               </td>
+            </tr>
+            <tr>
+               <td style="vertical-align: top;"><strong>Initial questions</strong></td>
+               <td style="vertical-align: top;">How many types of coffee beans do each country have?How does each country handle coffee beans?</td>
+            </tr>
+         </tbody>
+      </table>
+      <hr />
+      <div id="vis"></div>
+      <hr />
+      <table style="width: 850px;" cellspacing="5" cellpadding="5">
+         <tbody>
+            <tr>
+               <td style="width: 200px; vertical-align: top;"><strong>Description:&nbsp;</strong></td>
+               <td style="vertical-align: top;">These bar chart shows the quantity of coffee and coffee processing mothod in different countries. Number of coffee types  is sorted from big to small. Processing methods are indicated by different colors.</td>
+            </tr>
+            <tr>
+               <td style="vertical-align: top;"><strong>Insight:</strong></td>
+               <td style="vertical-align: top;">In the height bar chart things are as we might expect the top four countries with the most types of coffee are also the largest coffee producers. Coffee production is a major industry in these countries. United States(Hawaii) ranks sixth which is 10 times as many as the United States. Because Hawaii‘s climate conditions are indeed very suitable for the coffee plantation industry. <br>
+               Most coffees in the world are processed washed/wet. But the most coffees in Brazil, United States(Hawaii) and Ethiopia are processed by Natural/Dry.
+               I guess that it because Natural/Dry processing needs enought sunshine and high temperature which is exactly what these two tropical countries have.
+
+               </td>
+            </tr>
+            <tr>
+               <td style="vertical-align: top;"><strong>Design considerations</strong></td>
+               <td style="vertical-align: top;">I have used bar charts as they are very effective at conveying quantitative information. By sorting the countries based on the numbers of coffee. I can used this graph to find many informations. For example, i can find the country which has the most kinds of coffee.<br>
+               I used different colors to represent coffee processings which can show the percentage of processings in different countries. Add a new attribute by color which can help me analyze the relationships between countries and processing methods. 
+               In one word, this chart shows the values, rankings, percentages of different attributes.
+			</td>
+            </tr>
+            <tr>
+               <td style="width: 200px; vertical-align: top;"><strong>Data filtering and transformation:&nbsp;</strong></td>
+               <td style="vertical-align: top;">Firstly, i used Python to replace all null values in this dataset to 'unknown'. Then i change 'Country.of.Origin' to 'Country' in Vega-lite which makes graph beautiful.</td>
+            </tr>
+         </tbody>
+      </table>
+      <script type="text/javascript">
+        var yourVlSpec =  {
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "data": {"url": "https://raw.githubusercontent.com/Adam0429/info_vis/master/dataset/arabica_data_cleaned.csv",
+  "format": {"type": "csv"}
+},
+  "transform": [
+    {
+      "bin": true,
+      "field": "Country\\.of\\.Origin",
+      "as": "Country of origin"
+    }],
+  "layer": [{
+    "mark": "bar",
+    "encoding": {
+      "x": {
+        "field": "Country\\.of\\.Origin",
+        "title": "Country",
+        "type": "nominal",
+        "sort": {
+        "op": "count",
+        "order": "descending"
+      }
+      },
+      "y": {
+        "field": "Country\\.of\\.Origin",
+        "title": "kinds of coffee",
+        "aggregate": "count",
+        "type": "quantitative"
+      },
+      "color": {"field": "Processing\\.Method","title": "process method", "type": "nominal"}
+    }
+  }]
+}
+
+            vegaEmbed("#vis", yourVlSpec);
+      </script>
+   </body>
+</html>

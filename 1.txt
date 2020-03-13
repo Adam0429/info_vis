@@ -4,9 +4,15 @@
       "url": "https://raw.githubusercontent.com/jldbc/coffee-quality-database/master/data/arabica_data_cleaned.csv",
       "format": {"type": "csv"}
   },
-  "transform": [
-  ],
-  "repeat": {"column": ["Aroma", "Flavor", "Aftertaste","Acidity","Body"]},
+  "transform": [ 
+     {
+      "calculate": "datum['Number.of.Bags']*datum['Bag.Weight']",
+      "as": "BMI"
+     },
+    {"filter": "datum.BMI > 0"}
+],
+
+  "repeat": {"column": ["BMI","Aroma", "Flavor", "Aftertaste","Acidity","Body"]},
   "spec": {
     "mark": "bar",
     "encoding": {
@@ -27,7 +33,7 @@
       },
       "color": {
         "condition": {
-          "test": "datum['Country.of.Origin']== 'China'",
+          "test": "datum['Country.of.Origin']== 'Ethiopia'",
           "value": "#636363"
         },
         "value": "#bdbdbd"
