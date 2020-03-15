@@ -1,29 +1,32 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "data": {
-      "url": "https://raw.githubusercontent.com/jldbc/coffee-quality-database/master/data/arabica_data_cleaned.csv",
+      "url": "https://raw.githubusercontent.com/Adam0429/info_vis/master/dataset/arabica_data_cleaned.csv",
       "format": {"type": "csv"}
   },
-  "transform": [{"filter": "datum['altitude_mean_meters'] < 1000"}],
-
-  "title": {
-    "text": "Olympic Athletes - Height vs Weight",
-    "anchor": "start",
-    "fontSize": 24,
-    "offset": 20
-  },
-  "width": 500,
-  "height": 500,
-  "mark": {"type": "point", "filled": true},
+  "width": {"step": 20},
+  "height": 300,
+  "mark": "bar",
+  "transform": [
+    {
+      "calculate": "datum['Moisture'] * 20",
+      "as": "Moisture(processed)"
+     },
+    {"fold": ["Aroma", "Flavor", "Aftertaste","Acidity","Body","Moisture(processed)"]}],
   "encoding": {
-    "y": {
-      "field": "Moisture",
-      "type": "quantitative"
-
+    "column": {
+      "field": "key", "type": "nominal", "spacing": 10
     },
+    "y": {
+      "aggregate": "mean", "field":"value", "type": "quantitative",
+      "axis": {"title": "population", "grid": false}
+    },
+    
     "x": {
-      "field": "altitude_mean_meters",
-      "type": "quantitative"
+      "field": "Processing\\.Method", "type": "nominal",
+      "axis": {"title": "Aroma"}
+    },
+    "color": {
+      "field": "Processing\\.Method", "type": "nominal"
     }
   }
 }

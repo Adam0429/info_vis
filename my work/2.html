@@ -1,0 +1,111 @@
+<html>
+   <head>
+      <title> Feihong Wang - Assignment</title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.9.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@4.0.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.2.1"></script>
+      <style>
+         body {
+         font-family: sans-serif;
+         }
+      </style>
+   </head>
+   <body>
+      <table style="width: 850px;" cellspacing="5" cellpadding="5">
+         <tbody>
+            <tr>
+               <td style="width: 200px; vertical-align: top;"><strong>Name:&nbsp;</strong></td>
+               <td style="vertical-align: top;">Feihong Wang</td>
+            </tr>
+            <tr>
+               <td style="vertical-align: top;"><strong>Student Number:</strong></td>
+               <td style="vertical-align: top;">15205902</td>
+            </tr>
+            <tr>
+               <td style="vertical-align: top;"><strong>Dataset description:</strong></td>
+               <td style="vertical-align: top;"> 
+			    <p><a href="https://github.com/jldbc/coffee-quality-database/tree/master/data" target="_blank" rel="noopener">Coffee Quality Dataset</a>.</p>
+			    <p>These data contain reviews of 1312 arabica coffee beans from the Coffee Quality Institute's trained reviewers. The features include:<br>
+			    Quality Measures(Aroma, Flavor, Aftertaste, Acidity, Body, Balance, Uniformity, Cup Cleanliness, Sweetness, Moisture, Defects)<br>
+				Bean Metadata(Processing Method, Color, Species)<br>
+				Farm Metadata(Owner, Country of Origin, Farm Name, Lot Number, Mill, Company, Altitude, Region)</p>
+               </td>
+            </tr>
+            <tr>
+               <td style="vertical-align: top;"><strong>Initial questions</strong></td>
+               <td style="vertical-align: top;">Whether the processing method will affect the quality of coffee? What will it affect?</td>
+            </tr>
+         </tbody>
+      </table>
+      <hr />
+      <div id="vis"></div>
+      <hr />
+      <table style="width: 850px;" cellspacing="5" cellpadding="5">
+         <tbody>
+            <tr>
+               <td style="width: 200px; vertical-align: top;"><strong>Description:&nbsp;</strong></td>
+               <td style="vertical-align: top;">These bar charts show effects of processing methods on coffee quality. Processing methods are indicated by different colors and coffee quality score is mean value.</td>
+            </tr>
+            <tr>
+               <td style="vertical-align: top;"><strong>Insight:</strong></td>
+               <td style="vertical-align: top;">Bar charts can help me compare the differences between data efficiently. I selected seven data that I thought would be affected by the processing method and calculated the average. What I didn't expect is that the coffee score(Aroma, Flavor, Aftertaste, Acidity, Body, Balance) in terms of taste and taste is almost the same under different operations, maybe this is because the coffee beans have determined its taste before processing (planting period). It is expected that the Moisture of coffee beans is most affected by processing, because it is washed and dried to varying degrees during processing. The coffee bean which processed by semi-washed/ semi-washed has highest moisture. In known operations, Natural/ Dry processing makes coffee bean has lowest moisture.
+
+
+               </td>
+            </tr>
+            <tr>
+               <td style="vertical-align: top;"><strong>Design considerations</strong></td>
+               <td style="vertical-align: top;">I have used bar charts as they are very effective at comparing quantitative information. By comparing the coffee quality scores that i think that will influenced by processing methods, i need to make a bar chart for each one. By observing the differences in the data in each bar chart, I can analyze their relationships.I chose not to filter the null values in the data because it is also valuable for analysis.<br>
+			</td>
+            </tr>
+            <tr>
+               <td style="width: 200px; vertical-align: top;"><strong>Data filtering and transformation:&nbsp;</strong></td>
+               <td style="vertical-align: top;">Firstly, i used Python to replace all null values in this dataset to 'unknown' and normalised 'moisture' columns. In order to makes data clearly, i transformed 'Moisture' to 'Moisture(processed)' in Vega-lite which is multiplied 20.</td>
+            </tr>
+         </tbody>
+      </table>
+      <script type="text/javascript">
+        var yourVlSpec =  {
+        "data": {
+            "url": "https://raw.githubusercontent.com/Adam0429/info_vis/master/dataset/arabica_data_cleaned.csv",
+            "format": {"type": "csv"}
+        },
+        "title": {
+          "text": "evaluation and proceessing methods of coffee",
+          "anchor": "middle",
+          "fontSize": 20,
+          "offset": 20
+        },
+        "width": {"step": 20},
+        "height": 300,
+        "mark": "bar",
+        "transform": [
+          {
+            "calculate": "datum['Moisture'] * 20",
+            "as": "Moisture(processed)"
+           },
+          {"fold": ["Aroma", "Flavor", "Aftertaste","Acidity","Body","Balance","Moisture(processed)"]}],
+        "encoding": {
+          "column": {
+            "field": "key", "title":"coffee mean score", "type": "nominal", "spacing": 10
+          },
+          "y": {
+            "aggregate": "mean", "field":"value", "type": "quantitative",
+            "axis": {"title": "", "grid": true}
+          },
+          "x": {
+            "field": "Processing\\.Method", "type": "nominal",
+            "axis": {"title": "Processing Method"}
+          },
+          "color": {
+            "field": "Processing\\.Method", "title":"Processing Method", "type": "nominal"
+          }
+        }
+      }
+
+
+
+            vegaEmbed("#vis", yourVlSpec);
+      </script>
+   </body>
+</html>

@@ -44,7 +44,7 @@
          <tbody>
             <tr>
                <td style="width: 200px; vertical-align: top;"><strong>Description:&nbsp;</strong></td>
-               <td style="vertical-align: top;">These bar chart shows the quantity of coffee and coffee processing mothod in different countries. Number of coffee types  is sorted from big to small. Processing methods are indicated by different colors.</td>
+               <td style="vertical-align: top;">This bar chart shows the quantity of coffee and coffee processing mothod in different countries. Number of coffee types  is sorted from big to small. Processing methods are indicated by different colors.</td>
             </tr>
             <tr>
                <td style="vertical-align: top;"><strong>Insight:</strong></td>
@@ -57,7 +57,7 @@
             <tr>
                <td style="vertical-align: top;"><strong>Design considerations</strong></td>
                <td style="vertical-align: top;">I have used bar charts as they are very effective at conveying quantitative information. By sorting the countries based on the numbers of coffee. I can used this graph to find many informations. For example, i can find the country which has the most kinds of coffee.<br>
-               I used different colors to represent coffee processings which can show the percentage of processings in different countries. Add a new attribute by color which can help me analyze the relationships between countries and processing methods. 
+               I used different colors to represent coffee processings which can show the percentage of processings in different countries. Add a new attribute by color which can help me analyze the relationships between countries and processing methods. I have also encoded coffee informations in tooltips so it is possible to hover over a point to see it.
                In one word, this chart shows the values, rankings, percentages of different attributes.
 			</td>
             </tr>
@@ -70,36 +70,48 @@
       <script type="text/javascript">
         var yourVlSpec =  {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "data": {"url": "https://raw.githubusercontent.com/Adam0429/info_vis/master/dataset/arabica_data_cleaned.csv",
-  "format": {"type": "csv"}
-},
+  "data": {
+    "url": "https://raw.githubusercontent.com/Adam0429/info_vis/master/dataset/arabica_data_cleaned.csv",
+    "format": {"type": "csv"}
+  },
+   "title": {
+    "text": "kind and proceessing of coffee",
+    "anchor": "middle",
+    "fontSize": 20,
+    "offset": 20
+  },
   "transform": [
+    {"bin": true, "field": "Country\\.of\\.Origin", "as": "Country of origin"}
+  ],
+  "layer": [
     {
-      "bin": true,
-      "field": "Country\\.of\\.Origin",
-      "as": "Country of origin"
-    }],
-  "layer": [{
-    "mark": "bar",
-    "encoding": {
-      "x": {
-        "field": "Country\\.of\\.Origin",
-        "title": "Country",
-        "type": "nominal",
-        "sort": {
-        "op": "count",
-        "order": "descending"
+      "mark": "bar",
+      "encoding": {
+        "x": {
+          "field": "Country\\.of\\.Origin",
+          "title": "Country",
+          "type": "nominal",
+          "sort": {"op": "count", "order": "descending"}
+        },
+        "y": {
+          "field": "Country\\.of\\.Origin",
+          "title": "kinds of coffee",
+          "aggregate": "count",
+          "type": "quantitative"
+        },
+        "color": {
+          "field": "Processing\\.Method",
+          "title": "process method",
+          "type": "nominal"
+        },
+        "tooltip": [
+        {"field": "Country\\.of\\.Origin","title": "Country", "type": "nominal"},
+        {"field": "Variety", "type": "nominal"}
+    ]
+
       }
-      },
-      "y": {
-        "field": "Country\\.of\\.Origin",
-        "title": "kinds of coffee",
-        "aggregate": "count",
-        "type": "quantitative"
-      },
-      "color": {"field": "Processing\\.Method","title": "process method", "type": "nominal"}
     }
-  }]
+  ]
 }
 
             vegaEmbed("#vis", yourVlSpec);

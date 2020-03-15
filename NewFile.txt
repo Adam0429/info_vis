@@ -4,14 +4,10 @@
       "format": {"type": "csv"}
   },
   "width": {"step": 20},
-  "height": 300,
   "mark": "bar",
   "transform": [
-    {
-      "calculate": "datum['Moisture'] * 50",
-      "as": "Moisture*50"
-     },
-    {"fold": ["Aroma", "Flavor", "Aftertaste","Acidity","Body","Moisture*50"]}],
+    Moisture
+    {"fold": ["Aroma", "Flavor", "Aftertaste","Acidity","Body","Moisture"]}],
   "encoding": {
     "column": {
       "field": "key", "type": "nominal", "spacing": 10
